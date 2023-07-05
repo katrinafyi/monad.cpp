@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <type_traits>
 
 template <template <typename> typename T> struct functor;
 
@@ -68,8 +69,11 @@ template <typename...> struct inner_type_impl;
 template <template <typename...> typename C, typename T, typename... Args>
 struct inner_type_impl<C<T, Args...>> {
   using type = T;
+  // template <typename... Args2> using tmpl = C<Args2...>;
 };
 
 } // namespace
 
-template <typename T> using inner_type = typename inner_type_impl<T>::type;
+template <typename T>
+using inner_type = typename inner_type_impl<std::remove_cvref_t<T>>::type;
+// template <typename T> using outer_type = typename inner_type_impl<std::remove_cvref_t<T>>::tmpl;

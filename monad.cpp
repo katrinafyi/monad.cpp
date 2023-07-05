@@ -67,13 +67,20 @@ int main(int argc, char **argv) {
   for (auto x : cs)
     std::cout << x << ' ';
 
-  vector<bool> asd = monad_ops<vector, int>({1, 2, 3, 4})
+  vector<bool> asd = monad_ops<vector, int>(vector<int>{1, 2, 3, 4})
                          .then(monad<vector>::pure<int>)
                          .then([](auto) -> vector<bool> { return {true}; });
   auto x = monad_ops<vector, int>({1, 2});
 
   int na;
-  // auto aasdsa = monad_ops<std::reference_wrapper, int>(std::ref(na)).then(1);
+
+  monad_ops<std::optional, std::monostate> fdsa = monad_do<std::optional>();
+  monad_ops<std::optional, int> fasddsa = monad_do(std::optional<int>{});
+  monad_ops<vector, int> fasdd2sa = monad_ops<vector, int>(as);
+  monad_ops<vector, int> xaa = monad_do<vector>().with(vector<int>{1, 2, 3});
+  monad_ops<vector, int> x2aa = monad_do<vector>().with(as);
+  monad_ops<vector, int> xa2aa =
+      monad_do<vector>().with(as).with<vector<int>>({});
 
   return 0;
 }

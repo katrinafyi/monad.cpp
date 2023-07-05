@@ -16,9 +16,3 @@ namespace monad_do_impl {
   struct DoBind {};
 }
 
-template <template <typename> typename M, typename A>
-M<A> monad_do() {
-  using namespace monad_do_impl;
-  f<void>(1);
-  monad_do_impl::B<int> b;
-}
