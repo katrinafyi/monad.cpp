@@ -1,5 +1,6 @@
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <optional>
 
 #include "monad.hpp"
@@ -67,20 +68,35 @@ int main(int argc, char **argv) {
   for (auto x : cs)
     std::cout << x << ' ';
 
-  vector<bool> asd = monad_ops<vector, int>(vector<int>{1, 2, 3, 4})
+  vector<bool> asd = monad_do<vector, int>(vector<int>{1, 2, 3, 4})
                          .then(monad<vector>::pure<int>)
                          .then([](auto) -> vector<bool> { return {true}; });
-  auto x = monad_ops<vector, int>({1, 2});
+  auto x = monad_do<vector, int>({1, 2});
 
   int na;
 
-  monad_ops<std::optional, std::monostate> fdsa = monad_do<std::optional>();
-  monad_ops<std::optional, int> fasddsa = monad_do(std::optional<int>{});
-  monad_ops<vector, int> fasdd2sa = monad_ops<vector, int>(as);
-  monad_ops<vector, int> xaa = monad_do<vector>().with(vector<int>{1, 2, 3});
-  monad_ops<vector, int> x2aa = monad_do<vector>().with(as);
-  monad_ops<vector, int> xa2aa =
-      monad_do<vector>().with(as).with<vector<int>>({});
+  monad_do<std::optional, std::monostate> fdsa = mdo<std::optional>();
+  monad_do<vector, std::monostate> fdsa3 = mdo<vector>();
+  monad_do<vector, int> fasddsa = mdo<vector, int>({});
+  monad_do<std::optional, int> wfasddsa = mdo(std::optional<int>{});
+  monad_do<std::optional, int> wwfasddsa = mdo(a);
+  // monad_ops<std::optional, int> aswwfasddsa = monad_do({});
+  monad_do<vector, int> fasdd2sa = monad_do<vector, int>({});
+  monad_do<vector, int> xaa = mdo<vector>().with(vector<int>{1, 2, 3});
+  monad_do<vector, std::tuple<int, int, std::monostate>> xaaa =
+      mdo<vector, std::pair<int, int>>({{1, 2}}).with(
+          vector<std::monostate>{{}, {}, {}});
+  // auto axaa = monad_do<vector, int>({}).with<std::optional<int>>({1});
+  monad_do<vector, int> x2aa = mdo<vector>().with(as);
+  auto xa2aa = mdo<vector>()
+                   .with(as)
+                   .with(vector<std::monostate>{10, std::monostate{}})
+                   .with(vector<std::monostate>{10, std::monostate{}})
+                   .with(as)
+                   .then([](auto &args) -> vector<int> {
+                     auto &&[a, b, c, d] = args;
+                     return {a, d};
+                   });
 
   return 0;
 }

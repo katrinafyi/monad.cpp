@@ -76,4 +76,10 @@ struct inner_type_impl<C<T, Args...>> {
 
 template <typename T>
 using inner_type = typename inner_type_impl<std::remove_cvref_t<T>>::type;
-// template <typename T> using outer_type = typename inner_type_impl<std::remove_cvref_t<T>>::tmpl;
+// template <typename T> using outer_type = typename
+// inner_type_impl<std::remove_cvref_t<T>>::tmpl;
+
+template <typename, typename = void> constexpr bool is_complete_v = false;
+
+template <typename T>
+constexpr bool is_complete_v<T, std::void_t<decltype(sizeof(T))>> = true;
