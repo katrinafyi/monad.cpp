@@ -7,13 +7,13 @@
 
 template <bool cond, typename T, typename F>
   requires cond
-T conditional_v(T &&t, F &&) {
+inline T conditional_v(T &&t, F &&) {
   return t;
 }
 
 template <bool cond, typename T, typename F>
   requires(!cond)
-F conditional_v(T &&, F &&f) {
+inline F conditional_v(T &&, F &&f) {
   return f;
 }
 
