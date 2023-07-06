@@ -5,7 +5,6 @@
 
 #include "monad.hpp"
 #include "monad_do.hpp"
-#include "monad_ops.hpp"
 
 template <> struct monad<std::optional> {
   template <typename A> static std::optional<A> pure(const A &a) { return {a}; }
